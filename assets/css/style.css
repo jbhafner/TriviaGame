@@ -1,0 +1,27 @@
+body {
+		background: url("../images/bgGlobe.png") repeat 0 0;
+}
+
+h1 {
+	text-align: center;
+	font-size: 64px;
+}
+
+#containerBox {
+	background: gray;
+	margin: 30px;
+	text-align: center;
+}
+
+#timeRemaining {
+	font-size: 24px;
+}
+
+#question {
+	font-size: 24px;
+}
+
+.answer {
+	font-size: 32px;
+}
+
