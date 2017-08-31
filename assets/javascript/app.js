@@ -1,12 +1,17 @@
+// game object to store game information // 
 var game = {
-    count: 30,
-    win: 0,
-    loss: 0,
-    counter: 5
+    currentIndex: 0,
+    numberQuestions: 0,
+    playTime: 2,
+    delayTime: 5,
+    answerCorrect: 0,
+    answerWrong:0,
+    answerNone: 0,
+    correctIndex: 0,
+    correctAnswer: ""
 }
 
-
-// Questions Object contains all the questions and related info //
+// Questions array of objects contains all the questions and related info //
 var questions = [{
     question: "What is the capital city of Japan?",
     choices: ["Beijing", "Tokyo", "Shanghai", "Kyoto"],
@@ -54,9 +59,14 @@ var questions = [{
     image: "assets/images/NZFlag.jpg"       
 }];
 
+// ** Start program with Start Button ** //
+
+function startButton () {
+
+};
+
 // *** Functions Section *** //
 
-console.log(questions[1].question);
 console.log("questions array length is " + questions.length);    
 
 $("#answer1").on("mouseover mouseleave", highlight);
@@ -75,22 +85,15 @@ $( "#answer3" ).on( "click", function() {
 });
 $( "#answer4" ).on( "click", function() {
   debugClick(4);
-});        
-        // $("#answer1").click(debugClick(1));
-        //$("#answer2").on("click", debugClick(2));
-        // $("#answer3").on("click", debugClick);
-        // $("#answer4").on("click", debugClick);
+});
 
-
-
+// $("#answer1").click(debugClick(1));
+//$("#answer2").on("click", debugClick(2));
+// $("#answer3").on("click", debugClick);
+// $("#answer4").on("click", debugClick);
 // $( "#answer2" ).on( "click", function() {
 //   debugClick(33);
 // });
-
-
-
-
-
 
 function highlight(evt) {
     $(this).toggleClass("highlighted");        
@@ -98,46 +101,97 @@ function highlight(evt) {
 
 function debugClick(num) {
     console.log("Button Click " + num);
+    console.log("correctIndex is index " + game.correctIndex);
+    console.log("correctAnswer is index " + game.correctAnswer);    
 };
 
-//initialize play loop
-var length = questions.length;
-var i = 0;
-var maxTime = 5;
-console.log("test - length is " + length);
+function resultTimer() {
+    setTimeout(function(){
+        console.log("Execution paused for " + game.resultTime + " seconds");
+    },game.resultTime * 1000);
+};
+
+// Handle on Correct Answer, Wrong Answer, No Answer //
+
+
+function checkAnswer(num) {
+    console.log("");
+};
+
+// initialize play loop
+
 
 // Update HTML Functions //
 function updateQuestion() {
+    var i=game.currentIndex;
     $("#question").html(questions[i].question);
     $("#answer1").html(questions[i].choices[0]);
     $("#answer2").html(questions[i].choices[1]);
     $("#answer3").html(questions[i].choices[2]);
-    $("#answer4").html(questions[i].choices[3]);        
+    $("#answer4").html(questions[i].choices[3]);
+    game.correctIndex=questions[i].correctAnswer;
+    game.correctAnswer=questions[i].choices[game.correctIndex];
 };
 
-updateQuestion();   
+function rightAnswer() {
+    $("#answer2").html("You are right! " + game.correctAnswer + " is the correct answer.");
+    // add flickr api image
+}
 
-console.log ("i is " + i);
-console.log(questions[i].question);
+function wrongAnswer() {
+    $("#answer2").html("Sorry, you are wrong.")
+    $("#answer3").html("The correct answer is " + game.correctAnswer + ".");
+    //add flickr api image
+}
 
-var timer=setInterval(function(){
-
-    if (maxTime===0) {  
-    // only run after 30 secs
-        i++;
-        maxTime=5;
-    } // where does this go???
-
+function noAnswer(){
+    var dispTime=game.delayTime;
+    game.answerNone++;
+    console.log("game.AnswerNone is " + game.answerNone);
+    $("#question").html("Out of Time!");
+    $("#answer1").html("The correct answer is " + game.correctAnswer);
+    $("#answer2").html(" answer 2 element ");
+    $("#answer3").html(" answer 3 element ");
+    $("#answer4").html(" answer 4 element ");                
+    setTimeout(function(){
+        console.log ("dispTime display delay is " + dispTime);
+            dispTime--;        
+        }, 1000);
+    game.currentIndex++;
     updateQuestion();
-    maxTime--;
+    gameTimer();
+    // add flickr api image
 
+};
 
-    $("#timeRemaining").html("Time remaining: " + maxTime);
+console.log ("i is " + game.currentIndex);
+console.log(questions[game.currentIndex].question);
 
-}, 1000);
+function gameTimer() {
+    // if (game.currentIndex <= game.numberQuestions) {    
+        var maxTime = game.playTime;
 
-// *** Main Program Logic *** //
+        var timer=setInterval(function(){
+            console.log ("maxTime is " + maxTime);
+            if (maxTime===0) {
+                clearInterval(timer);
+                noAnswer();  
+                // game.currentIndex++;
+                // maxTime=game.playTime
+            } 
+            // updateQuestion();
+            maxTime--;
+            $("#timeRemaining").html("Time remaining: " + maxTime);
+        }, 1000);
+    // };
+};
 
-// updateQuestion();
+// ** Program Logic ** //
 
+updateQuestion();  // prints first answer to the screen
+gameTimer(); // starts timer running
 
+// I think I need to have the timer function only run once when it is called.  Then check no answer, correct answer or false answer.
+// I just realize the reazon that I get teh error at the end is that it keeps looping.  It does not stop at game.length
+// how do I convert var timer = function() into function timer()?
+// how do I handle the on.click events with regards to the timer function?
