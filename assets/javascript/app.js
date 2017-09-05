@@ -124,6 +124,7 @@ function updateQuestion() {
     $("#answer2").html(questions[i].choices[1]);
     $("#answer3").html(questions[i].choices[2]);
     $("#answer4").html(questions[i].choices[3]);
+    $("#flag").html(" ")
     GAME.correctIndex=questions[i].correctAnswer;
     GAME.correctAnswer=questions[i].choices[GAME.correctIndex];
     console.log ("var i = " + i + " // currentIndex = " + GAME.currentIndex + " // quest index is " + questions[i].correctAnswer + 
@@ -137,7 +138,9 @@ function rightAnswer() {
     $("#answer1").html(" ");
     $("#answer2").html("You are right! " + GAME.correctAnswer + " is the correct answer.");
     $("#answer3").html(" ");
-    $("#answer4").html(" ");   
+    $("#answer4").html(" ");
+    $("#flag").html('<img src='+questions[GAME.currentIndex].image+' height="220" width="340" margin="5">');   
+    console.log("<img src="+questions[GAME.currentIndex].image+">");
     // add flickr api image
     delay();
 }
@@ -147,8 +150,8 @@ function wrongAnswer() {
     $("#answer1").html(" ");
     $("#answer2").html("Sorry, you are wrong.")
     $("#answer3").html("The correct answer is " + GAME.correctAnswer + ".");
-    $("#answer4").html(" "); 
-    //add flickr api image
+    $("#answer4").html(" ");
+    $("#flag").html('<img src='+questions[GAME.currentIndex].image+' height="220" width="340" margin="5">');      //add flickr api image
     delay();
 }
 
@@ -159,9 +162,9 @@ function noAnswer(){
     $("#answer1").html("The correct answer is " + GAME.correctAnswer);
     $("#answer2").html(" ");
     $("#answer3").html(" ");
-    $("#answer4").html(" ");               
+    $("#answer4").html(" ");
+    $("#flag").html('<img src='+questions[GAME.currentIndex].image+' height="220" width="340" margin="5">');      // add flickr api image
     delay();
-    // add flickr api image
 };
 
 // This function is the delay after displaying the results of the answer selection //
@@ -188,6 +191,7 @@ function gameOver() {
     $("#answer2").html("Wrong Answers: " + GAME.answerWrong);
     $("#answer3").html("No response: " + GAME.answerNone);
     $("#answer4").html(" ");
+    $("#flag").html(" ")    
     setTimeout(function(){
         resetGame();       
         startButton();

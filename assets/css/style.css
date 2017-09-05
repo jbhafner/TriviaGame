@@ -28,3 +28,8 @@ h1 {
 .highlighted {
     background-color: Red;
 }
+
+#flag {
+	height: 220;
+	width: 340;
+}
